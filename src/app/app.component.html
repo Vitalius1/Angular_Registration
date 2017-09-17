@@ -1,20 +1,114 @@
-<!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
   <h1>
-    Welcome to {{title}}!
+    {{title}}!
   </h1>
-  <img width="300" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+  <div id="msg" *ngIf="users.length > 0">
+    <p>Thank you for registering with us {{ users[users.length - 1].first_name }}. We just sent a confirmation email at <a href="#">{{ users[users.length - 1].email }}</a>,
+      and will send all mail to {{ users[users.length - 1].address }} <span *ngIf="users[users.length - 1].unit_number"> Unit/Apt. # {{ users[users.length - 1].unit_number }}</span>,
+      {{ users[users.length - 1].city }} {{ users[users.length - 1].state }}</p>
+    <p>Have a wonderful day!</p>
+  </div>
+  <br>
+<form (submit)="onSubmit(formValidation)" #formValidation="ngForm">
+  <div id="container">
+    <div id="myform">
+      <label for="first_name">*First Name:</label>
+      <input type="text" name="first_name" required minlength="3" maxlength="24" pattern="[a-zA-Z]+" [(ngModel)]="user.first_name"
+        #first_name='ngModel' />
+      <div class="errors" *ngIf="first_name.invalid && (first_name.dirty || first_name.touched)">
+        <div class="errors" *ngIf="first_name?.errors.required">First name is required.</div>
+        <div class="errors" *ngIf="first_name?.errors.minlength">First name should be at least 3 characters long.</div>
+        <div class="errors" *ngIf="first_name?.errors.pattern">First name should be letters only.</div>
+      </div>
+      <br>
 
+      <label for="last_name">*Last Name:</label>
+      <input type="text" name="last_name" required minlength="3" maxlength="24" pattern="[a-zA-Z]+" [(ngModel)]="user.last_name"
+        #last_name='ngModel' />
+      <div class="errors" *ngIf="last_name.invalid && (last_name.dirty || last_name.touched)">
+        <div class="errors" *ngIf="last_name?.errors.required">Last name is required.</div>
+        <div class="errors" *ngIf="last_name?.errors.minlength">Last name should be at least 3 characters long.</div>
+        <div class="errors" *ngIf="last_name?.errors.pattern">Last name should be letters only.</div>
+      </div>
+      <br>
+
+      <label for="email">*Email:</label>
+      <input type="text" name="email" required pattern="([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,3})" [(ngModel)]="user.email"
+        #email='ngModel' />
+      <div class="errors" *ngIf="email.invalid && (email.dirty || email.touched)">
+        <div class="errors" *ngIf="email?.errors.required">Email is required.</div>
+        <div class="errors" *ngIf="email?.errors.pattern">Email must match a valid email pattern (<i>example: mail@mail.com</i>)</div>
+      </div>
+      <br>
+
+      <label for="password">*Password:</label>
+      <input type="password" name="password" required minlength="8" maxlength="24" [(ngModel)]="user.password" #password='ngModel'
+      />
+      <div class="errors" *ngIf="password.invalid && (password.dirty || password.touched)">
+        <div class="errors" *ngIf="password?.errors.required">Password is required.</div>
+        <div class="errors" *ngIf="password?.errors.minlength">Password should be between 8 and 24 characters long.</div>
+      </div>
+      <br>
+
+      <label for="confirm_password">*Password Confirmation:</label>
+      <input type="password" name="confirm_password" required pattern="{{user.password}}" [(ngModel)]="user.confirm_password" #confirm_password="ngModel"
+      />
+      <div class="errors" *ngIf="confirm_password.invalid && (confirm_password.dirty || confirm_password.touched)">
+        <div class="errors" *ngIf="confirm_password?.errors.required">Password Confirmation is required.</div>
+        <div class="errors" *ngIf="confirm_password?.errors.pattern">Password Confirmation should match Password field.</div>
+      </div>
+      <br>
+
+      <label for="address">*Street Address:</label>
+      <input type="text" name="address" required pattern="\d+\s[A-z0-9]+\s[A-z\s]+" [(ngModel)]="user.address" #address='ngModel'
+      />
+      <div class="errors" *ngIf="address.invalid && (address.dirty || address.touched)">
+        <div class="errors" *ngIf="address?.errors.required">Address is required.</div>
+        <div class="errors" *ngIf="address?.errors.pattern">Address should match a valid street pattern (<i>example: 123 Main St</i>)</div>
+      </div>
+      <br>
+
+      <label for="unit_number">Unit/Apt #:</label>
+      <input type="number" name="unit_number" step="1" min="1" pattern="[0-9]+" [(ngModel)]="user.unit_number" #unit_number='ngModel'
+      />
+      <div class="errors" *ngIf="unit_number.invalid">
+        <div class="errors" *ngIf="unit_number?.errors.pattern">Unit number can contain only numbers</div>
+      </div>
+      <br>
+
+      <label for="city">*City:</label>
+      <input type="text" name="city" required minlength="3" maxlength="30" pattern="[A-z\s]+" [(ngModel)]="user.city" #city='ngModel'
+      />
+      <div class="errors" *ngIf="city.invalid && (city.dirty || city.touched)">
+        <div class="errors" *ngIf="city?.errors.required">City is required.</div>
+        <div class="errors" *ngIf="city?.errors.minlength">City should be at least 3 characters long.</div>
+        <div class="errors" *ngIf="city?.errors.pattern">City should be letter characters only.</div>
+      </div>
+      <br>
+
+      <label for="state">*State:</label>
+      <select name="state" required [(ngModel)]="user.state" #state='ngModel'>
+        <option value="Alaska">Alaska</option>
+        <option value="Alaska">Alaska</option>
+        <option value="Alaska">Alaska</option>
+      </select>
+      <div class="errors" *ngIf="state.invalid && state.touched">
+        <div class="errors" *ngIf="state?.errors.required">State is required.</div>
+      </div>
+      <br>
+
+      <label for="lucky">*I'm Feeling lucky:</label>
+      <input type="radio" name="lucky" required [(ngModel)]="user.lucky" #lucky='ngModel' value="yes">Yes
+      <input type="radio" name="lucky" required [(ngModel)]="user.lucky" #lucky='ngModel' value="no">No
+      <div class="errors" *ngIf="lucky.invalid && lucky.touched">
+        <div class="errors" *ngIf="lucky?.errors.required">Choosing how you feel is required.</div>
+      </div>
+      <br>
+      <br>
+      <span>* Required fields</span>
+    </div>
+    <br>
+    <button type="submit" [disabled]="formValidation.invalid">Register</button>
+  </div>
+</form>

@@ -1,0 +1,31 @@
+.errors{
+    display: inline;
+    color: red;
+}
+#container{
+    width: 85%;
+    margin: 0 auto;
+}
+#myform{
+    border: 1px solid black;
+    font-size: 26px;
+    width: 100%;
+}
+input{
+    font-size: 26px;
+    margin-bottom: 10px;
+}
+select{
+    font-size: 26px;
+}
+button{
+    width: 100%;
+    font-size: 26px;
+}
+#msg{
+    color: green;
+    font-size: 26px;
+    width: 85%;
+    margin: 0 auto;
+    border: 1px solid black;
+}
