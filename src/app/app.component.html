@@ -43,7 +43,7 @@
       <br>
 
       <label for="password">*Password:</label>
-      <input type="password" name="password" required minlength="8" maxlength="24" [(ngModel)]="user.password" #password='ngModel'
+      <input type="password" name="password" required validateEqual="confirm_password" reverse="true" minlength="8" maxlength="24" [(ngModel)]="user.password" #password='ngModel'
       />
       <div class="errors" *ngIf="password.invalid && (password.dirty || password.touched)">
         <div class="errors" *ngIf="password?.errors.required">Password is required.</div>
@@ -52,11 +52,11 @@
       <br>
 
       <label for="confirm_password">*Password Confirmation:</label>
-      <input type="password" name="confirm_password" required pattern="{{user.password}}" [(ngModel)]="user.confirm_password" #confirm_password="ngModel"
+      <input type="password" name="confirm_password" required validateEqual="password" [(ngModel)]="user.confirm_password" #confirm_password="ngModel"
       />
       <div class="errors" *ngIf="confirm_password.invalid && (confirm_password.dirty || confirm_password.touched)">
         <div class="errors" *ngIf="confirm_password?.errors.required">Password Confirmation is required.</div>
-        <div class="errors" *ngIf="confirm_password?.errors.pattern">Password Confirmation should match Password field.</div>
+        <div class="errors" *ngIf="!confirm_password?.errors.validateEqual">Password Confirmation should match Password field.</div>
       </div>
       <br>
 
